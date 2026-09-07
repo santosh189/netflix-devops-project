@@ -1,0 +1,606 @@
+<div class="admin-layout">
+
+  <!-- ========================= -->
+  <!-- TOP BAR -->
+  <!-- ========================= -->
+
+  <header class="topbar">
+
+    <div class="logo">
+      NETFLIX ADMIN
+    </div>
+
+    <div class="admin-user">
+
+      <span>Welcome, Admin</span>
+
+      <button
+        type="button"
+        (click)="logout()">
+        Logout
+      </button>
+
+    </div>
+
+  </header>
+
+
+  <div class="main-layout">
+
+    <!-- ========================= -->
+    <!-- SIDEBAR -->
+    <!-- ========================= -->
+
+    <aside class="sidebar">
+
+      <div class="menu-title">
+        MENU
+      </div>
+
+      <button
+        type="button"
+        class="menu-item"
+        [class.active]="activePage === 'dashboard'"
+        (click)="showPage('dashboard')">
+        📊 Dashboard
+      </button>
+
+      <button
+        type="button"
+        class="menu-item"
+        [class.active]="activePage === 'movies'"
+        (click)="showPage('movies')">
+        🎬 Movies
+      </button>
+
+      <button
+        type="button"
+        class="menu-item"
+        [class.active]="activePage === 'users'"
+        (click)="showPage('users')">
+        👥 Users
+      </button>
+
+      <button
+        type="button"
+        class="menu-item"
+        [class.active]="activePage === 'subscriptions'"
+        (click)="showPage('subscriptions')">
+        💳 Subscriptions
+      </button>
+
+    </aside>
+
+
+    <!-- ========================= -->
+    <!-- CONTENT -->
+    <!-- ========================= -->
+
+    <main class="content">
+
+
+      <!-- ========================= -->
+      <!-- DASHBOARD -->
+      <!-- ========================= -->
+
+      @if (activePage === 'dashboard') {
+
+        <h1>Admin Dashboard</h1>
+
+        <p class="subtitle">
+          Netflix Training Platform Administration
+        </p>
+
+        <div class="stats-grid">
+
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              🎬
+            </div>
+
+            <div>
+
+              <p>Total Movies</p>
+
+              <h2>
+                {{ movies.length }}
+              </h2>
+
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              👥
+            </div>
+
+            <div>
+
+              <p>Total Users</p>
+
+              <h2>
+                {{ users.length }}
+              </h2>
+
+            </div>
+
+          </div>
+
+
+          <div class="stat-card">
+
+            <div class="stat-icon">
+              💳
+            </div>
+
+            <div>
+
+              <p>Subscriptions</p>
+
+              <h2>
+                {{ subscriptions.length }}
+              </h2>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <section class="recent-section">
+
+          <div class="section-header">
+
+            <h2>
+              Recent Movies
+            </h2>
+
+            <button
+              type="button"
+              class="add-button"
+              (click)="openMovieForm()">
+              + Add Movie
+            </button>
+
+          </div>
+
+
+          <table>
+
+            <thead>
+
+              <tr>
+                <th>Movie</th>
+                <th>Genre</th>
+                <th>Year</th>
+                <th>Status</th>
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (movie of movies; track movie.title) {
+
+                <tr>
+
+                  <td>
+                    {{ movie.title }}
+                  </td>
+
+                  <td>
+                    {{ movie.genre }}
+                  </td>
+
+                  <td>
+                    {{ movie.year }}
+                  </td>
+
+                  <td>
+
+                    <span class="status">
+                      {{ movie.status }}
+                    </span>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </section>
+
+      }
+
+
+      <!-- ========================= -->
+      <!-- MOVIES -->
+      <!-- ========================= -->
+
+      @if (activePage === 'movies') {
+
+        <div class="page-header">
+
+          <div>
+
+            <h1>
+              Movies
+            </h1>
+
+            <p class="subtitle">
+              Manage movies available on the platform
+            </p>
+
+          </div>
+
+
+          <button
+            type="button"
+            class="add-button"
+            (click)="openMovieForm()">
+            + Add Movie
+          </button>
+
+        </div>
+
+
+        <section class="recent-section">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>Title</th>
+                <th>Genre</th>
+                <th>Year</th>
+                <th>Status</th>
+                <th>Action</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (movie of movies; track movie.title) {
+
+                <tr>
+
+                  <td>
+                    {{ movie.title }}
+                  </td>
+
+                  <td>
+                    {{ movie.genre }}
+                  </td>
+
+                  <td>
+                    {{ movie.year }}
+                  </td>
+
+                  <td>
+
+                    <span class="status">
+                      {{ movie.status }}
+                    </span>
+
+                  </td>
+
+
+                  <!-- ACTION BUTTONS -->
+
+                  <td class="actions">
+
+                    <button
+                      type="button"
+                      class="edit-button"
+                      (click)="editMovie(movie)">
+                      Edit
+                    </button>
+
+
+                    <button
+                      type="button"
+                      class="delete-button"
+                      (click)="deleteMovie(movie)">
+                      Delete
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </section>
+
+      }
+
+
+      <!-- ========================= -->
+      <!-- USERS -->
+      <!-- ========================= -->
+
+      @if (activePage === 'users') {
+
+        <h1>
+          Users
+        </h1>
+
+        <p class="subtitle">
+          Manage registered platform users
+        </p>
+
+
+        <section class="recent-section">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>Name</th>
+                <th>Email</th>
+                <th>Status</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (user of users; track user.email) {
+
+                <tr>
+
+                  <td>
+                    {{ user.name }}
+                  </td>
+
+                  <td>
+                    {{ user.email }}
+                  </td>
+
+                  <td>
+
+                    <span class="status">
+                      {{ user.status }}
+                    </span>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </section>
+
+      }
+
+
+      <!-- ========================= -->
+      <!-- SUBSCRIPTIONS -->
+      <!-- ========================= -->
+
+      @if (activePage === 'subscriptions') {
+
+        <h1>
+          Subscriptions
+        </h1>
+
+        <p class="subtitle">
+          Manage customer subscription plans
+        </p>
+
+
+        <section class="recent-section">
+
+          <table>
+
+            <thead>
+
+              <tr>
+
+                <th>User</th>
+                <th>Plan</th>
+                <th>Status</th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              @for (
+                subscription of subscriptions;
+                track subscription.user
+              ) {
+
+                <tr>
+
+                  <td>
+                    {{ subscription.user }}
+                  </td>
+
+                  <td>
+                    {{ subscription.plan }}
+                  </td>
+
+                  <td>
+
+                    <span class="status">
+                      {{ subscription.status }}
+                    </span>
+
+                  </td>
+
+                </tr>
+
+              }
+
+            </tbody>
+
+          </table>
+
+        </section>
+
+      }
+
+    </main>
+
+  </div>
+
+
+  <!-- ========================= -->
+  <!-- MOVIE MODAL -->
+  <!-- ========================= -->
+
+  @if (showMovieForm) {
+
+    <div
+      class="modal-overlay"
+      (click)="closeMovieForm()">
+
+      <div
+        class="movie-form"
+        (click)="$event.stopPropagation()">
+
+
+        <!-- FORM HEADER -->
+
+        <div class="form-header">
+
+          <h2>
+            {{ isEditMode ? 'Edit Movie' : 'Add New Movie' }}
+          </h2>
+
+
+          <button
+            type="button"
+            class="close-button"
+            (click)="closeMovieForm()">
+            ✕
+          </button>
+
+        </div>
+
+
+        <!-- TITLE -->
+
+        <div class="form-group">
+
+          <label>
+            Movie Title
+          </label>
+
+          <input
+            type="text"
+            placeholder="Enter movie title"
+            [(ngModel)]="newMovie.title">
+
+        </div>
+
+
+        <!-- GENRE -->
+
+        <div class="form-group">
+
+          <label>
+            Genre
+          </label>
+
+          <input
+            type="text"
+            placeholder="Example: Action"
+            [(ngModel)]="newMovie.genre">
+
+        </div>
+
+
+        <!-- YEAR -->
+
+        <div class="form-group">
+
+          <label>
+            Release Year
+          </label>
+
+          <input
+            type="number"
+            placeholder="Example: 2026"
+            [(ngModel)]="newMovie.year">
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="form-group">
+
+          <label>
+            Description
+          </label>
+
+          <textarea
+            rows="4"
+            placeholder="Enter movie description"
+            [(ngModel)]="newMovie.description">
+          </textarea>
+
+        </div>
+
+
+        <!-- FORM BUTTONS -->
+
+        <div class="form-actions">
+
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="closeMovieForm()">
+            Cancel
+          </button>
+
+
+          <button
+            type="button"
+            class="save-button"
+            (click)="saveMovie()">
+
+            {{ isEditMode ? 'Save Changes' : 'Add Movie' }}
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

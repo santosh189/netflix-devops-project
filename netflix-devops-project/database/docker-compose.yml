@@ -1,0 +1,17 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: netflix-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: netflix
+      MYSQL_USER: netflix
+      MYSQL_PASSWORD: netflix123
+      MYSQL_ROOT_PASSWORD: root123
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
